@@ -2194,10 +2194,10 @@ pub fn bootstrap() -> bool {
     if let Ok(lic) = get_license_from_exe_name() {
         *config::EXE_RENDEZVOUS_SERVER.write().unwrap() = lic.host.clone();
     }
-    // ArkaDesk: token embedded in exe name -> used as access_token for hbbs token gate.
+    // ArkaDesk: token embedded in exe name -> stored as arka_token (NOT access_token) for hbbs token gate.
     if let Ok(exe) = std::env::current_exe() {
         if let Some(tok) = get_token_from_string(exe.to_str().unwrap_or("")) {
-            config::LocalConfig::set_option("access_token".into(), tok);
+            config::LocalConfig::set_option("arka_token".into(), tok);
         }
     }
 
