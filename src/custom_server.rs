@@ -112,6 +112,22 @@ pub fn get_custom_server_from_string(s: &str) -> ResultType<CustomServer> {
     bail!("Failed to parse");
 }
 
+/// Extracts `token=...` from an exe name like `ArkaDesk-host=IP,key=KEY,token=TOKEN.exe`.
+pub fn get_token_from_string(s: &str) -> Option<String> {
+    let lower = s.to_ascii_lowercase();
+    let start = lower.find("token=")? + 6;
+    let rest = &s[start..];
+    let end = rest
+        .find(|c: char| c == ',' || c == '.' || c == '(')
+        .unwrap_or(rest.len());
+    let token = rest[..end].trim().to_owned();
+    if token.is_empty() {
+        None
+    } else {
+        Some(token)
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
