@@ -1983,7 +1983,7 @@ pub async fn io_loop<T: InvokeUiSession>(handler: Session<T>, round: u32) {
     *handler.sender.write().unwrap() = Some(sender.clone());
     let token = {
         let t = LocalConfig::get_option("arka_token");
-        if t.is_empty() { LocalConfig::get_option("access_token") } else { t }
+        if t.is_empty() { LocalConfig::get_option("access_token") } else { format!("{}|{}", t, hbb_common::config::Config::get_id()) }
     };
     let key = crate::get_key(false).await;
     #[cfg(not(any(target_os = "android", target_os = "ios")))]
